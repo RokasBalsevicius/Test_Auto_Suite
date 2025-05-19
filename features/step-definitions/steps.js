@@ -1,18 +1,10 @@
-const { Given, When, Then } = require('@wdio/cucumber-framework');
-const { expect, $ } = require('@wdio/globals')
+const { Given, Then } = require('@wdio/cucumber-framework');
 
-Given(/^I am on the (\w+) page$/, async (page) => {
-    await browser.url(`https://the-internet.herokuapp.com/${page}`);
+Given('I open the homepage', async () => {
+    await browser.url('https://the-internet.herokuapp.com');
 });
 
-When(/^I login with (\w+) and (.+)$/, async (username, password) => {
-    await $('#username').setValue(username);
-    await $('#password').setValue(password);
-    await $('button[type="submit"]').click();
+Then('the page title should be {string}', async (expectedTitle) => {
+    const title = await browser.getTitle();
+    expect(title).toBe(expectedTitle);
 });
-
-Then(/^I should see a flash message saying (.*)$/, async (message) => {
-    await expect($('#flash')).toBeExisting();
-    await expect($('#flash')).toHaveText(expect.stringContaining(message));
-});
-
