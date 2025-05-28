@@ -14,10 +14,10 @@ When(/^User clicks on "Mokėjimo būdai" hyperlink at footer$/, async() => {
 Then(/^User can see page content title "Mokėjimo būdai"$/, async() => {
     const contentTitle = await $('.CmsPage-title-vWx');
     await contentTitle.waitForDisplayed({timeout: 5000});
-
-    expect(await contentTitle.isDisplayed()).toBe(true);
-    if(!contentTitle.isDisplayed()) {
-        console.log('Error: Mokejimo budai content title is not visible')
-    }
+    const isVisible = await contentTitle.isDisplayed().catch((err) => {
+        console.log(`contentTitle is not visible: ${err}`);
+        return false;
+    })
+    expect(isVisible).toBe(true);
     await expect(contentTitle).toHaveTextContaining('Mokėjimo būdai')
 })
