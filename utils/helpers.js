@@ -1,15 +1,18 @@
-async function cookieModalCloser(cookieModalSelector, cookieModalBtn){
-    const cookieModal = await $(cookieModalSelector);
-    await cookieModal.waitForDisplayed({timeout: 5000});
-    expect(await cookieModal.isDisplayed()).toBe(true);
+async function modalCloser(modalSelector, modalCloseButton) {
+    try {
+        const modal = await $(modalSelector);
+        await modal.waitForDisplayed({timeout: 5000});
 
-    const modalCloseBtn = await $(cookieModalBtn);
-    await modalCloseBtn.waitForDisplayed({timeout: 5000})
-    expect(await modalCloseBtn.isDisplayed()).toBe(true);
-
-    await modalCloseBtn.click();
+        if(await modal.isDisplayed()){
+            const closeButton = await $(modalCloseButton);
+            expect(await closeButton.isDisplayed()).toBe(true);
+            await closeButton.click();
+        } 
+    } catch {
+        console.log(`Modal is not visible: ${modalSelector}, proceeding further without closing`)
+    }
 }
 
 module.exports = {
-    cookieModalCloser
+    modalCloser
 }

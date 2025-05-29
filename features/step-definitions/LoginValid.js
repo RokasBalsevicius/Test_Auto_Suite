@@ -1,9 +1,9 @@
 const {Given, When, Then} = require("@wdio/cucumber-framework");
-const {cookieModalCloser} = require('../../utils/helpers.js');
+const { modalCloser } = require('../../utils/helpers.js');
 
 Given(/^User starts on the main page of Topocentras.lt$/, async() => {
     await browser.url('https://www.topocentras.lt/');
-    await cookieModalCloser('.CybotCookiebotDialogContentWrapper', '#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
+    await modalCloser('.CybotCookiebotDialogContentWrapper', '#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
     await expect(browser).toHaveTitle("TOPOCENTRAS.LT - Internetinė parduotuvė");
     
 
