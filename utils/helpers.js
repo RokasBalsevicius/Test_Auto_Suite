@@ -1,18 +1,26 @@
-async function modalCloser(modalSelector, modalCloseButton) {
+async function modalCloser(modalElement, closeButtonElement) {
     try {
-        const modal = await $(modalSelector);
-        await modal.waitForDisplayed({timeout: 5000});
+        await modalElement.waitForDisplayed({timeout: 5000});
 
-        if(await modal.isDisplayed()){
-            const closeButton = await $(modalCloseButton);
-            expect(await closeButton.isDisplayed()).toBe(true);
-            await closeButton.click();
+        if(await modalElement.isDisplayed()){
+            await expect(closeButtonElement).toBeDisplayed()
+            await closeButtonElement.click();
         } 
-    } catch {
-        console.log(`Modal is not visible: ${modalSelector}, proceeding further without closing`)
+    } catch (err) {
+        console.log(`Modal ${modalElement.selector} is not visible: ${err.message}. Proceeding further without closing`)
+    }
+}
+
+async function visibilityChecker(element){
+    try{
+        await element.waitForDisplayed({timeout: 5000});
+        await expect(element).toBeDisplayed()
+    } catch (err) {
+        throw new Error(`Selector ${element} is not visible: ${err.message}`)
     }
 }
 
 module.exports = {
-    modalCloser
+    modalCloser,
+    visibilityChecker
 }
