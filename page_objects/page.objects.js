@@ -40,6 +40,42 @@ class PageObject {
         return $('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll')
     }
 
+    get paymentMethodsWrapperTitle() {
+        return $('.CmsPage-title-vWx')
+    }
+
+    get paymentMethodsLink() {
+        return $('=Mokėjimo būdai')
+    }
+
+    get laptopProductGrid() {
+        return $('.ProductGrid-catalogProductGrid-3ct')
+    }
+
+    get laptopProductFirstItem() {
+        return $('.ProductGridItem-productWrapper-2ip')
+    }
+
+    get productGridAddToCartBtn() {
+        return this.laptopProductFirstItem.$('[data-test-id="add-to-cart-btn"]')
+    }
+
+    get cartModalWrapper() {
+        return $('.AddToCartModal-modal-yzF')
+    }
+
+    get cartModalContinueBtn() {
+        return $('[data-test-id="add-to-cart-modal-continue-btn"]')
+    }
+
+    get headerCartBtn() {
+        return $('.Cart-cartContainer-1zC')
+    }
+
+    get itemContainerCartPage() {
+        return $('.Products-nameContainer-TG5')
+    }
+
     async openPage(path = '') {
         await browser.url(`${path}`)
     }

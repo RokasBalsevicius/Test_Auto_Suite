@@ -1,39 +1,33 @@
 const { Before } = require('@wdio/cucumber-framework');
-const { modalCloser } = require('../utils/helpers.js')
+const { modalCloser, visibilityChecker } = require('../utils/helpers.js');
+const PageObject = require('../page_objects/page.objects.js');
 
 //Before hook to start at the cart page with already added item
 Before({tags: '@needs-item-in-cart'}, async() => {
-    console.log('Before hook runs') 
-    await browser.url('https://www.topocentras.lt/kompiuteriai-ir-plansetes/nesiojamieji-kompiuteriai.html');
-    await modalCloser('.CybotCookiebotDialogContentWrapper', '#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
+    console.log('Before hook runs');
+    await PageObject.openPage('/kompiuteriai-ir-plansetes/nesiojamieji-kompiuteriai.html');
+    await modalCloser(PageObject.cookieModalWrapper, PageObject.cookieModalCloseBtn);
 
-    const productGrid = await $('.ProductGrid-catalogProductGrid-3ct');
-    await productGrid.waitForDisplayed({timeout: 10000});
-    await productGrid.scrollIntoView();
+    await visibilityChecker(PageObject.laptopProductGrid);
+    await PageObject.laptopProductGrid.scrollIntoView();
     await browser.pause(3000);
 
-    const firstItem = await $('.ProductGridItem-productWrapper-2ip');
-    await firstItem.waitForDisplayed({timeout: 2000});
-    expect(await firstItem.isDisplayed()).toBe(true);
+    await visibilityChecker(PageObject.laptopProductFirstItem);
 
-    const addToCartButton = await firstItem.$('[data-test-id="add-to-cart-btn"]');
-    expect(await addToCartButton.isDisplayed()).toBe(true);
-    await addToCartButton.click();
+    await visibilityChecker(PageObject.productGridAddToCartBtn);
+    await PageObject.productGridAddToCartBtn.click();
 
-    try {
-        await modalCloser('.AddToCartModal-modal-yzF', '[data-test-id="add-to-cart-modal-continue-btn"]');
-    } catch (e) {
-        console.warn('Modal failed to close, but continuing...');
+    try{
+        await modalCloser(PageObject.cartModalWrapper, PageObject.cartModalContinueBtn);
+    } catch(err) {
+        throw new Error(`Error: ${err.message}. Modal failed to close, but continuing...`)
     }
 
-    const cartBtn = await $('.Cart-cartContainer-1zC')
-    await cartBtn.scrollIntoView();
-    expect(await cartBtn.isDisplayed()).toBe(true);
-    await cartBtn.click();
+    await visibilityChecker(PageObject.headerCartBtn);
+    await PageObject.headerCartBtn.scrollIntoView();
+    await PageObject.headerCartBtn.click();
 
-    const itemInCartPage = await $('.Products-nameContainer-TG5');
-    await itemInCartPage.waitForDisplayed({timeout: 3000})
-    expect(await itemInCartPage.isDisplayed()).toBe(true);
+    await visibilityChecker(PageObject.itemContainerCartPage)
 
     await browser.waitUntil(
         async () => (await browser.getTitle()).includes('Krepšelis'),

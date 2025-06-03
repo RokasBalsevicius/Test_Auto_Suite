@@ -1,8 +1,10 @@
 const {Given, When, Then} = require('@wdio/cucumber-framework');
+const PageObject = require('../../page_objects/page.objects.js');
+const { modalCloser, visibilityChecker } = require('../../utils/helpers.js');
+
 
 When(/^User clicks on "Mokėjimo būdai" hyperlink at footer$/, async() => {
-    const newTabLink = await $('=Mokėjimo būdai');
-    const relativeUrl = await newTabLink.getAttribute('href');
+    const relativeUrl = await PageObject.paymentMethodsLink.getAttribute('href');
     const fullUrl = `https://www.topocentras.lt${relativeUrl}`;
 
     await browser.newWindow(fullUrl);
@@ -12,12 +14,6 @@ When(/^User clicks on "Mokėjimo būdai" hyperlink at footer$/, async() => {
 })
 
 Then(/^User can see page content title "Mokėjimo būdai"$/, async() => {
-    const contentTitle = await $('.CmsPage-title-vWx');
-    await contentTitle.waitForDisplayed({timeout: 5000});
-    const isVisible = await contentTitle.isDisplayed().catch((err) => {
-        console.log(`contentTitle is not visible: ${err}`);
-        return false;
-    })
-    expect(isVisible).toBe(true);
-    await expect(contentTitle).toHaveTextContaining('Mokėjimo būdai')
+    await visibilityChecker(PageObject.paymentMethodsWrapperTitle);
+    await expect(PageObject.paymentMethodsWrapperTitle).toHaveTextContaining('Mokėjimo būdai')
 })
