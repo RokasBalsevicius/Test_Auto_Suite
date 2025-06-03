@@ -1,60 +1,46 @@
 const {Given, When, Then} = require("@wdio/cucumber-framework");
-const { modalCloser } = require('../../utils/helpers.js');
+const { modalCloser, visibilityChecker } = require('../../utils/helpers.js');
+const PageObject = require('../../page_objects/page.objects.js');
 
 Given(/^User starts on the main page of Topocentras.lt$/, async() => {
-    await browser.url('https://www.topocentras.lt/');
-    await modalCloser('.CybotCookiebotDialogContentWrapper', '#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
-    await expect(browser).toHaveTitle("TOPOCENTRAS.LT - Internetinė parduotuvė");
-    
-
+    await PageObject.openPage('/')
+    await modalCloser(PageObject.cookieModalWrapper, PageObject.cookieModalCloseBtn);
+    await expect(browser).toHaveTitle("TOPOCENTRAS.LT - Internetinė parduotuvė")
 })
 
 When(/^User clicks "Prisijungti" on the main page$/, async() => {
-    const loginBtn = await $('[data-test-id="header-login-btn"]');
-    await loginBtn.waitForDisplayed({timeout: 5000});
-    expect(await loginBtn.isDisplayed()).toBe(true);
-
-    await loginBtn.click();
+    await visibilityChecker(PageObject.headerLoginBtn);
+    await PageObject.headerLoginBtn.click()
 })
 
 Then(/^User can see login modal$/, async() => {
-    const loginModal = await $('.Modal-modal-1aA.LoginModal-loginModal-2X8')
-    await loginModal.waitForDisplayed({timeout: 4000});
-    expect(await loginModal.isDisplayed()).toBe(true);
+    await visibilityChecker(PageObject.loginModal);
 })
 
 Then(/^User enters valid username and password$/, async(dataTable) => {
     const {username, password} = dataTable.rowsHash();
-    const loginInput = await $('[data-test-id="username"]')
-    const passInput = await $('[data-test-id="password"]');
-    expect(await loginInput.isDisplayed()).toBe(true);
-    expect(await passInput.isDisplayed()).toBe(true);
-
-    await loginInput.setValue(username);
-    await passInput.setValue(password);
+    const inputFields = [PageObject.loginInputField, PageObject.passwordInputField];
+    for(const field of inputFields){
+        await visibilityChecker(field);
+    }
+    await PageObject.loginInputField.setValue(username);
+    await PageObject.passwordInputField.setValue(password);
 })
 
 Then(/^User clicks on Prisijungti button$/, async() => {
-    const loginBtn = await $('[data-test-id="login-btn"]');
-    expect(await loginBtn.isDisplayed()).toBe(true);
-    await loginBtn.click();
+    await visibilityChecker(PageObject.loginBtn);
+    await PageObject.loginBtn.click();
 })
 
 Then(/^User is logged in and sees Profile and Logout buttons$/, async() => {
-    const profileBtn = await $('[data-test-id="my-account-link"]');
-    await profileBtn.waitForDisplayed({timeout: 5000})
-    expect(await profileBtn.isDisplayed()).toBe(true);
-
-    const logoutBtn = await $('[data-test-id="header-logout-btn"]');
-    await logoutBtn.waitForDisplayed({timeout: 5000})
-    expect(await logoutBtn.isDisplayed()).toBe(true);
+    const buttonsList = [PageObject.profileBtn, PageObject.logoutBtn]
+    for(const btn of buttonsList) {
+        await visibilityChecker(btn);
+    }
 })
-Then(/^User is able to logout$/, async() => {
-    const logoutBtn = await $('[data-test-id="header-logout-btn"]');
-    expect(await logoutBtn.isDisplayed()).toBe(true)
-    await logoutBtn.click();
 
-    const loginModal = await $('.Modal-modal-1aA.LoginModal-loginModal-2X8');
-    await loginModal.waitForDisplayed({timeout: 5000});
-    expect(await loginModal.isDisplayed()).toBe(true)
+Then(/^User is able to logout$/, async() => {
+    await visibilityChecker(PageObject.logoutBtn);
+    await PageObject.logoutBtn.click();
+    await visibilityChecker(PageObject.loginModal);
 })
