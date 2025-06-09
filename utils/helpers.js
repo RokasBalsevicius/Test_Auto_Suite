@@ -20,7 +20,18 @@ async function visibilityChecker(element){
     }
 }
 
+async function browserLoader() {
+    await browser.waitUntil(
+        async () => (await browser.execute(() => document.readyState)) === 'complete',
+        {
+          timeout: 10000,
+          timeoutMsg: 'Page did not load completely in time',
+        }
+      );
+}
+
 module.exports = {
     modalCloser,
-    visibilityChecker
+    visibilityChecker,
+    browserLoader
 }
