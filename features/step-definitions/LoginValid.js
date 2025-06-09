@@ -17,19 +17,9 @@ Then(/^User can see login modal$/, async() => {
     await visibilityChecker(PageObject.loginModal);
 })
 
-Then(/^User enters valid username and password$/, async(dataTable) => {
+Then(/^User enters valid username, password and clicks login button$/, async(dataTable) => {
     const {username, password} = dataTable.rowsHash();
-    const inputFields = [PageObject.loginInputField, PageObject.passwordInputField];
-    for(const field of inputFields){
-        await visibilityChecker(field);
-    }
-    await PageObject.loginInputField.setValue(username);
-    await PageObject.passwordInputField.setValue(password);
-})
-
-Then(/^User clicks on Prisijungti button$/, async() => {
-    await visibilityChecker(PageObject.loginBtn);
-    await PageObject.loginBtn.click();
+    await PageObject.loginAction(username, password)
 })
 
 Then(/^User is logged in and sees Profile and Logout buttons$/, async() => {

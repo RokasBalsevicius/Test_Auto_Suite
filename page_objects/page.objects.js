@@ -1,3 +1,5 @@
+const { visibilityChecker } = require('../utils/helpers.js');
+
 class PageObject {
 
     get headerLoginBtn() {
@@ -78,6 +80,18 @@ class PageObject {
 
     async openPage(path = '') {
         await browser.url(`${path}`)
+    }
+
+    async loginAction(username, password) {
+        const inputFields = [this.loginInputField, this.passwordInputField];
+        for(const field of inputFields){
+            await visibilityChecker(field);
+        }
+        await this.loginInputField.setValue(username);
+        await this.passwordInputField.setValue(password);
+
+        await visibilityChecker(this.loginBtn);
+        await this.loginBtn.click();
     }
 }
 
