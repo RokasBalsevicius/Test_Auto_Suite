@@ -16,6 +16,7 @@ const translations = {
     }
 }
 
+
 class PageObject {
 
     get headerLogo() {
@@ -43,8 +44,8 @@ class PageObject {
     }
 
     async getLanguageElement(languageCode) {
-        let lowerCaseLanguageCode = languageCode.toLowerCase()
-        return $(`//span[@class='language__item-iso' and text()='${lowerCaseLanguageCode}']`)
+        const lowerCaseLanguageCode = languageCode.toLowerCase()
+        return $(`//span[normalize-space()='${lowerCaseLanguageCode}']`)
     }
 
     async openPage() {
