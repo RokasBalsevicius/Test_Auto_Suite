@@ -20,19 +20,19 @@ const translations = {
 class PageObject {
 
     get headerLogo() {
-        return $('.nav-header__logo img')
+        return $('.logo')
     }
 
     get headerLanguageBtn() {
-        return $('.language')
+        return $('.StyledLanguageBtnWrp-sc-7oyh7y')
     }
 
     get loginBtn() {
-        return $('.btn.btn-tertiary')
+        return $("div[class='StyledUserNav-sc-1o2gfvp hqRnYp collapse'] button[type='submit']")
     }
 
     get registrationBtn() {
-        return $('.btn.btn-secondary')
+        return $("div[class='StyledUserNav-sc-1o2gfvp hqRnYp collapse'] button[type='button']")
     }
 
     get loginInputField() {
@@ -49,7 +49,7 @@ class PageObject {
     }
 
     async openPage() {
-        await browser.url('https://www.betsafe.lt/lt');
+        await browser.url('https://www.betsson.lt/lt');
         await browserLoader();
     }
 
