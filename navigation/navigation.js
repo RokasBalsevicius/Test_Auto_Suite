@@ -1,4 +1,4 @@
-const PageObject = require('../page_objects/betsafePage.obj.js');
+const PageObject = require('../page_objects/betssonPage.obj.js');
 const { browserLoader } = require('../utils/helpers.js');
 
 class PageNavigation {

@@ -43,6 +43,18 @@ class PageObject {
         return $('#password')
     }
 
+    get rebrandInfoWrapper() {
+        return $('.StyledModalContainer-sc-4fgr9i')
+    }
+
+    get rebrandInfoWrapperCloseBtn() {
+        return $('.StyledPromoCloseBtn-sc-1i1axep')
+    }
+
+    get oneTrustCookieCloseBtn() {
+        return $('#onetrust-close-btn-container')
+    }
+
     async getLanguageElement(languageCode) {
         const lowerCaseLanguageCode = languageCode.toLowerCase()
         return $(`//span[normalize-space()='${lowerCaseLanguageCode}']`)
