@@ -6,11 +6,15 @@ Given(/^User start at Cart page with already added item$/, async () => {
 
 When(/^User selects insurance plan$/, async() => {
     const insurancePlan = await $('.ServiceCard-selectControl-1_9');
+    //switches to Selenium instead of Chromedriver - thus tests are running faster causing some elements to not be ready before action. Need refactoring.    
+    await browser.pause(3000);
     expect(await insurancePlan.isDisplayed()).toBe(true);
 
     await insurancePlan.click();
 
     const dropdownTable = await $('.ServiceCard-selectMenu-1nW');
+    //switches to Selenium instead of Chromedriver - thus tests are running faster causing some elements to not be ready before action. Need refactoring.
+    await browser.pause(3000);
     expect(await dropdownTable.isDisplayed()).toBe(true)
 
     /*Due to "focus" on a dropdown list, unable to catch attributes for available selections, thus all options are rendered into 
