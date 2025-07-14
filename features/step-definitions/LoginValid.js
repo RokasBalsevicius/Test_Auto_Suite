@@ -1,6 +1,6 @@
 const {Given, When, Then} = require("@wdio/cucumber-framework");
 const { modalCloser, visibilityChecker } = require('../../utils/helpers.js');
-const PageObject = require('../../page_objects/page.objects.js');
+const PageObject = require('../../page_objects/topocentrasPage.obj.js');
 
 Given(/^User starts on the main page of Topocentras.lt$/, async() => {
     await PageObject.openPage('/')

@@ -1,5 +1,5 @@
 const {Given, When, Then} = require('@wdio/cucumber-framework');
-const PageObject = require('../../page_objects/page.objects.js');
+const PageObject = require('../../page_objects/topocentrasPage.obj.js');
 const { modalCloser, visibilityChecker } = require('../../utils/helpers.js');
 
 

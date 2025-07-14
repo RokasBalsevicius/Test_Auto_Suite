@@ -1,6 +1,6 @@
 const { Before } = require('@wdio/cucumber-framework');
 const { modalCloser, visibilityChecker } = require('../utils/helpers.js');
-const PageObject = require('../page_objects/page.objects.js');
+const PageObject = require('../page_objects/topocentrasPage.obj.js');
 
 //Before hook to start at the cart page with already added item
 Before({tags: '@needs-item-in-cart'}, async() => {
