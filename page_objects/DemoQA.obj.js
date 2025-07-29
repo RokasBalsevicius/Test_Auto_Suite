@@ -1,4 +1,4 @@
-const { browserLoader } = require('../utils/helpers.js');
+const { browserLoader, visibilityChecker } = require('../utils/helpers.js');
 const path = require('path');
 
 class PageObject {
@@ -95,7 +95,6 @@ class PageObject {
     async openPage(slug) {
         await browser.url('https://demoqa.com/' + slug);
         await browserLoader();
-
     }
 
     async requiredElements({genderIndex = 1, hobbyIndex = 0} = {}) {
@@ -117,5 +116,49 @@ class PageObject {
         ]
         return requiredElements;
     }
+
+    async checkRequiredElementsVisibility() {
+        const elements = await this.requiredElements({genderIndex: 1, hobbyIndex: 0});
+        for(const el of elements) {
+            await el.scrollIntoView();
+            console.warn(`Currently checking visibility of element: ${el.selector}`);
+            await visibilityChecker(el);
+        }
+    }
+
+    async fillForm({
+        firstname = 'Test',
+        lastname = 'Tester',
+        email = 'tester123@mail.com',
+        genderIndex = 1,
+        hobbyIndex = 0,
+        phone = '3701234567',
+        dob = '30 Jul 2000',
+        subject = 'Maths',
+        address = 'Test street 123.',
+        //state = this.stateOption, -> if further needed, this could be adjusted by changing stateOption getter to a function with an argument passed for other options for more dynamic selector
+        //city = this.cityOption, -> if further needed, this could be adjusted by changing stateOption getter to a function with an argument passed for other options for more dynamic selector
+        filePath = this.filePath
+    } = {}) {
+        const genderBtns = await this.genderRadioBtns();
+        const hobbyBtns = await this.hobbiesRadioBtns();
+        await this.nameField.setValue(firstname);
+        await this.surnameField.setValue(lastname)
+        await this.emailField.setValue(email);
+        await genderBtns[genderIndex].click();
+        await this.phoneNumberField.setValue(phone);
+        await this.dateOfBirthField.setValue(dob);
+        await this.subjectContainerField.setValue(subject);
+        await browser.keys('Enter');
+        await hobbyBtns[hobbyIndex].click();
+        await this.formFileUploadBtn.setValue(filePath);
+        await this.addressInputField.setValue(address);
+        await this.stateField.click();
+        await this.stateOption.click();
+        await this.cityField.click();
+        await this.cityOption.click();
+        await this.formSubmitBtn.click();
+    }
 }
+
 module.exports = new PageObject();

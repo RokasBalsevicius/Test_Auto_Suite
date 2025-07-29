@@ -6,4 +6,4 @@ Feature: Full form submission functionality testing
         When User fills in the form correctly
         Then User can see successfully submitted form confirmation modal
         And User closes form submission confirmation modal
-        Then Form submission confirmation modalis no longer displayed
+        Then Form submission confirmation modal no longer displayed
