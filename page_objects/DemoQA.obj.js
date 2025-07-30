@@ -3,6 +3,37 @@ const path = require('path');
 
 class PageObject {
 
+    get contraryToolTip() {
+        return $(`div[class='col-12 mt-4 col-md-6'] a:nth-child(1)`);
+    }
+
+    get sectionToolTip() {
+        return $(`//a[normalize-space()='1.10.32']`);
+    }
+
+    get hoverMeToSeeBtn() {
+        return $('#toolTipButton');
+    }
+
+    get toolTipTextSelector() {
+        return $('.tooltip-inner');
+    }
+
+    get expectedToolTipTexts() {
+        return [
+            'You hovered over the Button',
+            'You hovered over the Contrary',
+            'You hovered over the 1.10.32'
+        ]
+    }
+
+    async hoverToolTipCheck(toolTip, toolTipTextElement, expectedTexts) {
+        await visibilityChecker(toolTip);
+        const toolTipText = await toolTipTextElement.getText();
+        expect(expectedTexts.some(text => toolTipText.includes(text))).toBe(true);
+        console.log(`received text: ${toolTipText}`);
+    }
+
     get formFileUploadBtn() {
         return $('#uploadPicture');
     }
@@ -94,6 +125,7 @@ class PageObject {
 
     async openPage(slug) {
         await browser.url('https://demoqa.com/' + slug);
+        await browser.setWindowSize(1500, 800);
         await browserLoader();
     }
 
