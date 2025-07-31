@@ -3,16 +3,28 @@ const path = require('path');
 
 class PageObject {
 
+    get hoverMeToSeeBtn() {
+        return $('#toolTipButton');
+    }
+
+    get hoverMeToSeeBtnAriaValue() {
+        return 'buttonToolTip';
+    }
+    
     get contraryToolTip() {
         return $(`div[class='col-12 mt-4 col-md-6'] a:nth-child(1)`);
+    }
+
+    get contraryToolTipAriaValue() {
+        return 'contraryTexToolTip';
     }
 
     get sectionToolTip() {
         return $(`//a[normalize-space()='1.10.32']`);
     }
 
-    get hoverMeToSeeBtn() {
-        return $('#toolTipButton');
+    get sectionToolTipAriaValue() {
+        return 'sectionToolTip';
     }
 
     get toolTipTextSelector() {
@@ -27,12 +39,31 @@ class PageObject {
         ]
     }
 
+    async mouseMover(selector) {
+        const isVisible = await selector.isDisplayed();
+        if(!isVisible) {
+            await selector.scrollIntoView();
+        }
+        await selector.moveTo();
+    }
+/*method waitForAriaDescribedBy() helps to remove browser.pause need after hovering on the button and waits for attribute to appear*/
+    async waitForAriaDescribedBy(element, expectedValue, timeout = 5000) {
+        await browser.waitUntil(
+            async () => (await element.getAttribute('aria-describedby')) === expectedValue,
+            {
+                timeout,
+                timeoutMsg: `aria-describedby="${expectedValue}" did not appear on element ${await element.selector}`
+            }
+        )
+    }
+
     async hoverToolTipCheck(toolTip, toolTipTextElement, expectedTexts) {
         await visibilityChecker(toolTip);
         const toolTipText = await toolTipTextElement.getText();
         expect(expectedTexts.some(text => toolTipText.includes(text))).toBe(true);
         console.log(`received text: ${toolTipText}`);
     }
+
 
     get formFileUploadBtn() {
         return $('#uploadPicture');
@@ -114,11 +145,6 @@ class PageObject {
         return $('#closeLargeModal');
     }
 
-    async randomRadioBtnSelector(buttons) {
-        const randomIndex = Math.floor(Math.random() * buttons.length);
-        return buttons[randomIndex];
-    }
-
     get filePath() {
         return path.join(__dirname, '../test_files/sampleFile.pdf');
     }
@@ -147,6 +173,11 @@ class PageObject {
             this.cityField
         ]
         return requiredElements;
+    }
+
+    async randomRadioBtnSelector(buttons) {
+        const randomIndex = Math.floor(Math.random() * buttons.length);
+        return buttons[randomIndex];
     }
 
     async checkRequiredElementsVisibility() {

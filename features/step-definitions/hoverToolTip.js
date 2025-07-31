@@ -6,13 +6,10 @@ Given(/^User starts at the page to test hovering and ToolTips$/, async() => {
     await PageObject.openPage('tool-tips');
 })
 
+
 When(/^User hovers on "Hover me to see" button$/, async() => {
-    const isVisible = await PageObject.hoverMeToSeeBtn.isDisplayed();
-    if(!isVisible) {
-        await PageObject.hoverMeToSeeBtn.scrollIntoView();
-    }
-    await PageObject.hoverMeToSeeBtn.moveTo();
-    await browser.pause(1000);
+    await PageObject.mouseMover(PageObject.hoverMeToSeeBtn);
+    await PageObject.waitForAriaDescribedBy(PageObject.hoverMeToSeeBtn, PageObject.hoverMeToSeeBtnAriaValue);
 })
 
 Then(/^User can see a ToolTip for hovered button with text inside$/, async() => {
@@ -20,13 +17,10 @@ Then(/^User can see a ToolTip for hovered button with text inside$/, async() => 
     await PageObject.hoverToolTipCheck(PageObject.hoverMeToSeeBtn, PageObject.toolTipTextSelector, expectedTexts)
 })
 
+
 When(/^User hovers on "Contrary" hypertext$/, async() => {
-    const isVisible = await PageObject.contraryToolTip.isDisplayed();
-    if(!isVisible) {
-        await PageObject.contraryToolTip.scrollIntoView();
-    }
-    await PageObject.contraryToolTip.moveTo();
-    await browser.pause(1000);
+    await PageObject.mouseMover(PageObject.contraryToolTip);
+    await PageObject.waitForAriaDescribedBy(PageObject.contraryToolTip, PageObject.contraryToolTipAriaValue);
 })
 
 Then(/^User can see a ToolTip for hovered hypertext "Contrary" with text inside$/, async() => {
@@ -34,13 +28,10 @@ Then(/^User can see a ToolTip for hovered hypertext "Contrary" with text inside$
     await PageObject.hoverToolTipCheck(PageObject.contraryToolTip, PageObject.toolTipTextSelector, expectedTexts)
 })
 
+
 When(/^User hovers on "1.10.32" hypertext$/, async() => {
-    const isVisible = await PageObject.sectionToolTip.isDisplayed();
-    if(!isVisible) {
-        await PageObject.sectionToolTip.scrollIntoView();
-    }
-    await PageObject.sectionToolTip.moveTo();
-    await browser.pause(1000);
+    await PageObject.mouseMover(PageObject.sectionToolTip);
+    await PageObject.waitForAriaDescribedBy(PageObject.sectionToolTip, PageObject.sectionToolTipAriaValue);
 })
 
 Then(/^User can see a ToolTip for hovered hypertext "1.10.32" with text inside$/, async() => {
