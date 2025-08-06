@@ -151,7 +151,9 @@ class PageObject {
 
     async openPage(slug) {
         await browser.url('https://demoqa.com/' + slug);
-        await browser.setWindowSize(1500, 800);
+        await browser.execute(() => {
+            document.body.style.zoom = '80%';
+        });
         await browserLoader();
     }
 
