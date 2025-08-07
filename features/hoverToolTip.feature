@@ -1,5 +1,5 @@
 Feature: Hover and ToolTip functionality test 
-    @runthis
+    
     Scenario: As a user, I am able to hover on an object and see the tooltip displayed
 
         Given User starts at the page to test hovering and ToolTips
